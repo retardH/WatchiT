@@ -1,0 +1,38 @@
+<script setup>
+  const props = defineProps({
+    title: {
+      type: String,
+      required: true
+    },
+    contents: {
+      type: Array
+    },
+    open: {
+      type: Boolean,
+      default: false
+    }
+  })
+</script>
+
+<template>
+  <transition name="hover-drop">
+    <div v-if="props.open"
+         class="bg-blue-50 absolute -bottom-22 z-50 rounded-sm py-1 min-w-max flex flex-col overflow-hidden">
+      <div v-for="content in props.contents" :key="content" class="py-1 pl-3 pr-6 hover:bg-blue-100">
+        <span class="text-blue-950 text-sm">
+          {{content}}
+        </span>
+      </div>
+    </div>
+  </transition>
+</template>
+
+<style>
+.hover-drop-enter-active,.hover-drop-leave-active {
+    transition: all 0.2s ease-in-out;
+}
+
+.hover-drop-enter-from, .hover-drop-leave-to {
+  opacity: 0;
+}
+</style>
