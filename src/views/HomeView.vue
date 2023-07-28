@@ -1,23 +1,32 @@
 <script setup>
-import {onMounted} from "vue";
-import {axiosInstance, generateApiOption, IMAGE_URL_DOMAIN} from "@/api";
+import {computed, onMounted, ref, watch} from "vue";
 import TheBanner from "@/components/Home/TheBanner.vue";
-import MovieCard from "@/components/Common/MovieCard.vue";
+import Card from "@/components/Common/TheCard.vue";
 import MainContainerLayout from "@/Layout/MainContainerLayout.vue";
 import {useMoviesStore} from "@/stores/movies";
 import {storeToRefs} from "pinia";
 import TheCarousel from "@/components/Common/TheCarousel.vue";
+import ClickDropDown from "@/components/Common/ClickDropDown.vue";
 const useMovies = useMoviesStore();
-const {nowPlayingMoviesOnHome} = storeToRefs(useMovies);
+const trendingFilterQuery = ref('');
+const watchProviderFilterQuery = ref('');
+const computedTrendingQuery = computed(() => trendingFilterQuery.value === 'Today' ? 'day' : 'week');
+const computedWatchProviderQuery = computed(() => trendingFilterQuery.value === 'Movie' ? 'movie' : 'tv');
+const {trendingMoviesOnHome, popularDatas} = storeToRefs(useMovies);
+const {fetchTrendingMovies, fetchTrendingTvShows, fetchMoviesWatchProviders, fetchPopulars} = useMovies;
+const popularQuery = ref('');
+const computedPopularQuery = computed(() => popularQuery.value === 'On Theaters' ? 'movie' : 'tv');
+watch(computedTrendingQuery, () => {
+  fetchTrendingMovies(computedTrendingQuery.value);
+})
+watch(computedPopularQuery, () => {
+  fetchPopulars(computedPopularQuery.value);
+})
 onMounted(() => {
-  axiosInstance('/3/movie/now_playing?page=1', generateApiOption())
-      .then(response => {
-        console.log(response.data);
-        nowPlayingMoviesOnHome.value = response.data.results;
-      })
-      .catch(error => {
-        console.log(error);
-      })
+  fetchTrendingTvShows('day');
+  fetchTrendingMovies(computedTrendingQuery.value);
+  fetchMoviesWatchProviders('movie');
+  fetchPopulars(computedPopularQuery.value);
 })
 </script>
 
@@ -26,21 +35,44 @@ onMounted(() => {
     <TheBanner/>
     <div class="mt-8 px-2 lg:px-8">
       <div class="flex items-center justify-between mb-4">
-        <h4 class="text-blue-950 text-xl md:text-2xl">Trending</h4>
+        <div class="flex items-center gap-4">
+          <h4 class="text-blue-950 text-xl md:text-2xl">Trending Movies</h4>
+          <ClickDropDown :options="['Today', 'This Week']" @filterQuery="(q) =>
+          trendingFilterQuery = q"/>
+        </div>
         <a class="text-blue-500 text-sm cursor-pointer">See more</a>
       </div>
+      <TheCarousel :slides="trendingMoviesOnHome" v-slot="slotProps">
+        <Card :data="slotProps.slide" card-type="movie"/>
+      </TheCarousel>
     </div>
     <div class="mt-8 px-2 lg:px-8">
       <div class="flex items-center justify-between mb-4">
-        <h4 class="text-blue-950 text-xl md:text-2xl">Now Playing on Cinemas</h4>
+        <div class="flex items-center gap-4">
+          <h4 class="text-blue-950 text-xl md:text-2xl">What's Popular</h4>
+          <ClickDropDown :options="['On TV', 'On Theaters']" @filterQuery="(q) =>
+          popularQuery = q"/>
+        </div>
         <a class="text-blue-500 text-sm cursor-pointer">See more</a>
       </div>
-<!--      <div class="grid grid-cols-1 md:grid-cols-4 xl:grid-cols-6 gap-2">-->
-<!--        <MovieCard v-for="movie in nowPlayingMoviesOnHome" :key="movie.id" :movie="movie"/>-->
-<!--      </div>-->
-      <TheCarousel :slides="nowPlayingMoviesOnHome" v-slot="slotProps">
-        <MovieCard :movie="slotProps.slide"/>
+      <TheCarousel :slides="popularDatas" v-slot="slotProps">
+        <Card :data="slotProps.slide" card-type="tv"/>
       </TheCarousel>
+    </div>
+    <div class="mt-8 px-2 lg:px-8">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-4">
+          <h4 class="text-blue-950 text-xl md:text-2xl">Available Networks to Watch</h4>
+          <ClickDropDown :options="['Movie', 'TV Show']" @filterQuery="(q) =>
+          watchProviderFilterQuery = q"/>
+        </div>
+        <a class="text-blue-500 text-sm cursor-pointer">See more</a>
+      </div>
+      <div class="-z-20 h-[300px] mx-auto overflow-hidden bg-top bg-cover banner" :style="{backgroundImage:
+      'url(https://image.tmdb.org/t/p/original/5YZbUmjbMa3ClvSW1Wj3D6XGolb.jpg)'}">
+        <div class="flex w-full h-full justify-center backdrop-brightness-50 backdrop-blur-md flex-col gap-6 px-8">
+        </div>
+      </div>
     </div>
   </MainContainerLayout>
 </template>

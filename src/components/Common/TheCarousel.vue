@@ -10,11 +10,13 @@ const breakpoints = {
   1024: {
     itemsToShow: 6,
     snapAlign: 'start',
+    itemsToScroll: 3,
   }
 }
 const setting = {
   itemsToShow: 2,
   snapAlign: 'start',
+  itemsToScroll: 2
 }
 const props = defineProps({
   slides: {
@@ -26,7 +28,7 @@ const props = defineProps({
 
 <template>
   <div>
-    <Carousel v-bind="setting" :breakpoints="breakpoints" :wrap-around="true" :autoplay="4000">
+    <Carousel v-bind="setting" :breakpoints="breakpoints" :wrap-around="true">
       <Slide v-for="slide in props.slides" :key="slide.id">
         <div class="carousel__item">
           <slot :slide="slide"></slot>
@@ -50,7 +52,7 @@ const props = defineProps({
 
 .carousel__icon {
   fill: dodgerblue;
-  stroke-width: 2px;
+  stroke-width: 1px;
   height: 48px;
   stroke: dodgerblue;
 }

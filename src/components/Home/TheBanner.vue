@@ -1,5 +1,17 @@
+<script setup>
+  import {storeToRefs} from "pinia";
+  import {useMoviesStore} from "@/stores/movies";
+  import {onUpdated} from "vue";
+  const useMovie = useMoviesStore();
+  const {bannerBackgroundImage} = storeToRefs(useMovie);
+  onUpdated(() => {
+    console.log(bannerBackgroundImage.value);
+  })
+</script>
+
 <template>
-  <div class="-z-20 h-[380px] mx-auto bg-center bg-cover banner">
+  <div class="-z-20 h-[380px] mx-auto overflow-hidden bg-center bg-cover banner" :style="{backgroundImage:
+  bannerBackgroundImage ? 'url(https://image.tmdb.org/t/p/original' + bannerBackgroundImage : 'https://image.tmdb.org/t/p/original/2vFuG6bWGyQUzYS9d69E5l85nIz.jpg'}">
     <div
         class="flex w-full h-full justify-center backdrop-brightness-50 backdrop-blur-sm flex-col gap-6 px-8">
       <div class="flex flex-col gap-1 z-30">
@@ -16,12 +28,6 @@
   </div>
 </template>
 
-<script setup>
-
-</script>
-
 <style scoped>
-  .banner {
-    background-image: url("https://image.tmdb.org/t/p/original/yF1eOkaYvwiORauRCPWznV9xVvi.jpg");
-  }
+
 </style>

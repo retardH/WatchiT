@@ -13,7 +13,7 @@ const mobileMenuItems = [
     text: 'Movies'
   },
   {
-    text: 'TV Shows'
+    text: 'TvShows'
   },
   {
     text: 'People'
@@ -60,6 +60,6 @@ const mobileMenuItems = [
 
 .mobile-menu-enter-active a,
 .mobile-menu-leave-active a {
-  transition: all 0.2s ease;
+  transition: all 0.2s ease-in;
 }
 </style>
