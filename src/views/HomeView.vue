@@ -62,7 +62,7 @@ onMounted(() => {
     <div class="mt-8 px-2 lg:px-8">
       <div class="flex items-center justify-between mb-4">
         <div class="flex items-center gap-4">
-          <h4 class="text-blue-950 text-xl md:text-2xl">Available Networks to Watch</h4>
+          <h4 class="text-blue-950 text-xl md:text-2xl">Available Networks</h4>
           <ClickDropDown :options="['Movie', 'TV Show']" @filterQuery="(q) =>
           watchProviderFilterQuery = q"/>
         </div>
