@@ -1,33 +1,27 @@
 <script setup>
 import {sliceWords} from "@/utils/wordSlice";
+import {IMAGE_URL_DOMAIN} from "@/api";
 
 const props = defineProps({
-  imgUrl: {
-    type: String,
-    required: true
-  },
-  title: {
-    type: String,
-    required: true
-  },
-  releaseDate: {
-    type: String,
+  movie: {
+    type: Object,
     required: true
   }
 })
+const imageUrl = `${IMAGE_URL_DOMAIN}/w500${props.movie.poster_path}`;
 </script>
 
 <template>
-  <div class="col-auto flex flex-col gap-4">
+  <div class="col-auto flex flex-col gap-2">
     <div>
-      <img :src="props.imgUrl" :alt="props.title" class="rounded-sm"/>
+      <img :src="imageUrl" :alt="props.movie.title" class="rounded-sm"/>
     </div>
     <div class="flex flex-col gap-0.5">
-      <h4 class="text-blue-950 text-base mb-0">
-        {{sliceWords(props.title, 22)}}
+      <h4 class="text-blue-950 text-sm md:text-base font-bold mb-0 text-start" style="line-height: 18px">
+        {{sliceWords(props.movie.title, 22)}}
       </h4>
-      <span class="text-sm text-gray-500">
-        {{props.releaseDate}}
+      <span class="text-xs md:text-sm text-gray-500 text-start">
+        {{props.movie.release_date}}
       </span>
     </div>
   </div>

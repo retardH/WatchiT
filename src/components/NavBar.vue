@@ -1,3 +1,12 @@
+<script setup>
+import DropDown from '@/components/Common/HoverDropDown.vue';
+import { ref } from 'vue';
+import MobileMenu from '@/components/MobileMenu.vue';
+const isMovieDropDownOpen = ref(false);
+const isTvShowDropDownOpen = ref(false);
+const isMobileMenuOpen = ref(false);
+</script>
+
 <template>
   <div class="bg-blue-950 sticky top-0" style="z-index: 9999">
     <nav
@@ -54,11 +63,3 @@
   </div>
 </template>
 
-<script setup>
-import DropDown from '@/components/Common/HoverDropDown.vue'
-import { ref } from 'vue'
-import MobileMenu from '@/components/MobileMenu.vue'
-const isMovieDropDownOpen = ref(false)
-const isTvShowDropDownOpen = ref(false)
-const isMobileMenuOpen = ref(false)
-</script>
