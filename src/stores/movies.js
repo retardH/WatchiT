@@ -9,6 +9,17 @@ export const useMoviesStore = defineStore('movies', () => {
     const bannerBackgroundImage = ref('');
     const moviesWatchProviders = ref([]);
     const popularDatas = ref([]);
+    const genres = ref([]);
+    const searchQueryOptions = ref({
+        genres: ['Action', 'Adventure'],
+        releases: [],
+    })
+    const mutateSearchQueryOptions = (options) => {
+        searchQueryOptions.value = {
+            ...searchQueryOptions.value,
+            ...options
+        }
+    }
     const fetchTrendingMovies = async (query) => {
         axiosInstance(`/3/trending/movie/${query}`, generateApiOption())
             .then(response => {
@@ -50,6 +61,15 @@ export const useMoviesStore = defineStore('movies', () => {
                 console.error(error);
             })
     }
+    const fetchGenres = async (query) => {
+        axiosInstance(`/3/genre/${query}/list`, generateApiOption())
+            .then(response => {
+                genres.value = response.data.genres;
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }
     return {
         nowPlayingMoviesOnHome,
         trendingMoviesOnHome,
@@ -59,6 +79,10 @@ export const useMoviesStore = defineStore('movies', () => {
         bannerBackgroundImage,
         fetchMoviesWatchProviders,
         fetchPopulars,
-        popularDatas
+        popularDatas,
+        genres,
+        fetchGenres,
+        searchQueryOptions,
+        mutateSearchQueryOptions
     }
 })

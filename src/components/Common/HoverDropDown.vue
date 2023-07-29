@@ -1,4 +1,6 @@
 <script setup>
+  import {useRoute} from "vue-router";
+  import Router from "@/router";
   const props = defineProps({
     title: {
       type: String,
@@ -12,6 +14,13 @@
       default: false
     }
   })
+  const generateRouteToRedirect = (route) => {
+    if(route.includes(' ')) {
+      const splitText = route.split(' ').join('_');
+      return `/${props.title.toLowerCase()}/discover/${splitText.toLowerCase()}`;
+    }
+    return `/${props.title.toLowerCase()}/discover/${route.toLowerCase()}`;
+  }
 </script>
 
 <template>
@@ -19,7 +28,7 @@
     <div v-if="props.open"
          class="bg-blue-50 absolute -bottom-22 z-50 rounded-sm py-1 min-w-max flex flex-col overflow-hidden">
       <div v-for="content in props.contents" :key="content" class="py-1 pl-3 pr-6 hover:bg-blue-100">
-        <span class="text-blue-950 text-sm">
+        <span class="text-blue-950 text-sm" @click="Router.push(generateRouteToRedirect(content))">
           {{content}}
         </span>
       </div>

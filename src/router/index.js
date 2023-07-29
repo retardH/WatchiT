@@ -18,17 +18,17 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue'),
     },
     {
-      path: '/movies/:category',
+      path: '/movie/discover/:category',
       name: 'movies',
       component: () => import('../views/MovieListsView.vue'),
     },
     {
-      path: '/tv/:category',
+      path: '/tv/discover/:category',
       name: 'tv-shows',
       component: () => import('../views/MovieListsView.vue'),
     },
     {
-      path: '/movies/detail/:id',
+      path: '/movie/detail/:id',
       name: 'movie-detail',
       component: () => import('../views/MovieDetailView.vue'),
     }

@@ -42,7 +42,7 @@ onMounted(() => {
         </div>
         <a class="text-blue-500 text-sm cursor-pointer">See more</a>
       </div>
-      <TheCarousel :slides="trendingMoviesOnHome" v-slot="slotProps">
+      <TheCarousel v-if="trendingMoviesOnHome.length >= 1" :slides="trendingMoviesOnHome" v-slot="slotProps">
         <Card :data="slotProps.slide" card-type="movie"/>
       </TheCarousel>
     </div>
@@ -55,7 +55,7 @@ onMounted(() => {
         </div>
         <a class="text-blue-500 text-sm cursor-pointer">See more</a>
       </div>
-      <TheCarousel :slides="popularDatas" v-slot="slotProps">
+      <TheCarousel v-if="popularDatas.length >= 1" :slides="popularDatas" v-slot="slotProps">
         <Card :data="slotProps.slide" card-type="tv"/>
       </TheCarousel>
     </div>
