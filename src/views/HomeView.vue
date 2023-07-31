@@ -7,13 +7,14 @@ import {useMoviesStore} from "@/stores/movies";
 import {storeToRefs} from "pinia";
 import TheCarousel from "@/components/Common/TheCarousel.vue";
 import ClickDropDown from "@/components/Common/ClickDropDown.vue";
+import {cardDataTransformer} from "@/transformers/cardDataTransformer";
 const useMovies = useMoviesStore();
 const trendingFilterQuery = ref('');
 const watchProviderFilterQuery = ref('');
 const computedTrendingQuery = computed(() => trendingFilterQuery.value === 'Today' ? 'day' : 'week');
 const computedWatchProviderQuery = computed(() => trendingFilterQuery.value === 'Movie' ? 'movie' : 'tv');
 const {trendingMoviesOnHome, popularDatas} = storeToRefs(useMovies);
-const {fetchTrendingMovies, fetchTrendingTvShows, fetchMoviesWatchProviders, fetchPopulars} = useMovies;
+const {fetchTrendingMovies, fetchMoviesWatchProviders, fetchPopulars} = useMovies;
 const popularQuery = ref('');
 const computedPopularQuery = computed(() => popularQuery.value === 'On Theaters' ? 'movie' : 'tv');
 watch(computedTrendingQuery, () => {
@@ -23,7 +24,6 @@ watch(computedPopularQuery, () => {
   fetchPopulars(computedPopularQuery.value);
 })
 onMounted(() => {
-  fetchTrendingTvShows('day');
   fetchTrendingMovies(computedTrendingQuery.value);
   fetchMoviesWatchProviders('movie');
   fetchPopulars(computedPopularQuery.value);
@@ -40,23 +40,20 @@ onMounted(() => {
           <ClickDropDown :options="['Today', 'This Week']" @filterQuery="(q) =>
           trendingFilterQuery = q"/>
         </div>
-        <a class="text-blue-500 text-sm cursor-pointer">See more</a>
       </div>
       <TheCarousel v-if="trendingMoviesOnHome.length >= 1" :slides="trendingMoviesOnHome" v-slot="slotProps">
-        <Card :data="slotProps.slide" card-type="movie"/>
+        <Card :data="cardDataTransformer(slotProps.slide)"/>
       </TheCarousel>
     </div>
     <div class="mt-8 px-2 lg:px-8">
       <div class="flex items-center justify-between mb-4">
         <div class="flex items-center gap-4">
           <h4 class="text-blue-950 text-xl md:text-2xl">What's Popular</h4>
-          <ClickDropDown :options="['On TV', 'On Theaters']" @filterQuery="(q) =>
-          popularQuery = q"/>
+          <ClickDropDown :options="['On TV', 'On Theaters']" @filterQuery="(q) => popularQuery = q"/>
         </div>
-        <a class="text-blue-500 text-sm cursor-pointer">See more</a>
       </div>
       <TheCarousel v-if="popularDatas.length >= 1" :slides="popularDatas" v-slot="slotProps">
-        <Card :data="slotProps.slide" card-type="tv"/>
+        <Card :data="cardDataTransformer(slotProps.slide)"/>
       </TheCarousel>
     </div>
     <div class="mt-8 px-2 lg:px-8">
@@ -66,7 +63,6 @@ onMounted(() => {
           <ClickDropDown :options="['Movie', 'TV Show']" @filterQuery="(q) =>
           watchProviderFilterQuery = q"/>
         </div>
-        <a class="text-blue-500 text-sm cursor-pointer">See more</a>
       </div>
       <div class="-z-20 h-[300px] mx-auto overflow-hidden bg-top bg-cover banner" :style="{backgroundImage:
       'url(https://image.tmdb.org/t/p/original/5YZbUmjbMa3ClvSW1Wj3D6XGolb.jpg)'}">

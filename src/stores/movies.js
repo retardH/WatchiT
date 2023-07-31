@@ -8,10 +8,11 @@ export const useMoviesStore = defineStore('movies', () => {
     const trendingTvShowsOnHome = ref([]);
     const bannerBackgroundImage = ref('');
     const moviesWatchProviders = ref([]);
+    const movieListsData = ref([]);
     const popularDatas = ref([]);
     const genres = ref([]);
     const searchQueryOptions = ref({
-        genres: ['Action', 'Adventure'],
+        genres: [],
         releases: [],
     })
     const mutateSearchQueryOptions = (options) => {
@@ -20,6 +21,16 @@ export const useMoviesStore = defineStore('movies', () => {
             ...options
         }
     }
+    const fetchMovieLists = async (query) => {
+        movieListsData.value = [];
+        axiosInstance(query, generateApiOption())
+            .then(response => {
+                movieListsData.value = response.data.results;
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }
     const fetchTrendingMovies = async (query) => {
         axiosInstance(`/3/trending/movie/${query}`, generateApiOption())
             .then(response => {
@@ -27,16 +38,6 @@ export const useMoviesStore = defineStore('movies', () => {
                 let randomIndex = Math.floor(Math.random() * trendingMoviesOnHome.value.length);
                 bannerBackgroundImage.value = trendingMoviesOnHome.value[randomIndex].backdrop_path;
                 console.log('movies',response.data.results);
-            })
-            .catch(error => {
-                console.error(error);
-            })
-    }
-    const fetchTrendingTvShows = async (query) => {
-        axiosInstance(`/3/trending/tv/${query}`, generateApiOption())
-            .then(response => {
-                trendingTvShowsOnHome.value = response.data.results;
-                console.log(response.data.results);
             })
             .catch(error => {
                 console.error(error);
@@ -75,7 +76,6 @@ export const useMoviesStore = defineStore('movies', () => {
         trendingMoviesOnHome,
         trendingTvShowsOnHome,
         fetchTrendingMovies,
-        fetchTrendingTvShows,
         bannerBackgroundImage,
         fetchMoviesWatchProviders,
         fetchPopulars,
@@ -83,6 +83,8 @@ export const useMoviesStore = defineStore('movies', () => {
         genres,
         fetchGenres,
         searchQueryOptions,
-        mutateSearchQueryOptions
+        mutateSearchQueryOptions,
+        fetchMovieLists,
+        movieListsData
     }
 })

@@ -4,6 +4,7 @@ import {ref} from "vue";
 import TheBadge from "@/components/Common/TheBadge.vue";
 import {useMoviesStore} from "@/stores/movies";
 import {storeToRefs} from "pinia";
+import TheSelect from "@/components/Common/TheSelect.vue";
 const useMovie = useMoviesStore();
 const {searchQueryOptions} = storeToRefs(useMovie);
 const releaseTypes = ref([
@@ -38,6 +39,9 @@ const props = defineProps({
   },
   selectedGenres: {
     type: Array
+  },
+  languages: {
+    type: Array,
   }
 })
 const mutateSelectedGenres = (selectedGenre) => {
@@ -71,7 +75,7 @@ const mutateSelectedGenres = (selectedGenre) => {
               </div>
             </div>
           </div>
-          <div v-if="props.genres" class="flex flex-col gap-2 p-2">
+          <div v-if="props.genres" class="flex flex-col gap-2 p-2 border-b">
             <h4 class="text-base text-gray-400 font-light">Genres</h4>
             <div class="flex items-center flex-wrap gap-2">
               <TheBadge v-for="genre in props.genres" :key="genre.id" :value="genre.name"
@@ -79,6 +83,16 @@ const mutateSelectedGenres = (selectedGenre) => {
                         @genre-change="mutateSelectedGenres(genre.name)"
               />
             </div>
+          </div>
+          <div class="flex flex-col gap-2 p-2 border-b">
+            <h4>Languages</h4>
+            <TheSelect :options="props.languages" />
+          </div>
+          <div class="flex flex-col gap-2 p-2 border-b">
+            <h4>Languages</h4>
+          </div>
+          <div class="flex flex-col gap-2 p-2">
+            <h4>Languages</h4>
           </div>
         </div>
     </TheAccordion>

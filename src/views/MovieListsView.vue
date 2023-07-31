@@ -2,15 +2,22 @@
 import DataFilter from "@/components/DataFilter.vue";
 import DataSort from "@/components/DataSort.vue";
 import MainContainerLayout from "@/Layout/MainContainerLayout.vue";
-import {computed, onMounted, onUpdated, ref} from "vue";
+import {computed, onMounted, onUpdated, ref, watch} from "vue";
 import {useRoute} from "vue-router";
 import {useMoviesStore} from "@/stores/movies";
 import {storeToRefs} from "pinia";
+import {useConfigurationStore} from "@/stores/configuration";
+import TheCard from "@/components/Common/TheCard.vue";
+import {cardDataTransformer} from "@/transformers/cardDataTransformer";
+import TheSpinner from "@/components/Common/TheSpinner.vue";
 const route = useRoute();
 const useMovie = useMoviesStore();
-const {genres} = storeToRefs(useMovie);
+const useConfiguration = useConfigurationStore();
+const {genres, movieListsData} = storeToRefs(useMovie);
+const {fetchLanguages} = useConfiguration;
+const {languages} = storeToRefs(useConfiguration);
 const selectedGenres = ref([]);
-const {fetchGenres} = useMovie;
+const {fetchGenres, fetchMovieLists} = useMovie;
 const sortOptions = [
   {
     value: "popularity.desc",
@@ -52,13 +59,28 @@ const titleText = computed(() => {
   return '';
 })
 
+watch(
+    () => route.path,
+    () => {
+      if(route.path.includes('movie')) {
+        fetchMovieLists(`3/movie/${route.params.category}`);
+      } else if(route.path.includes('tv')) {
+        fetchMovieLists(`3/tv/${route.params.category}`);
+      }
+      console.log(movieListsData.value);
+    }
+)
+
 onMounted(() => {
   if(route.path.includes('movie')) {
     fetchGenres('movie');
+    fetchMovieLists(`3/movie/${route.params.category}`);
   } else if(route.path.includes('tv')) {
     fetchGenres('tv');
+    fetchMovieLists(`3/tv/${route.params.category}`);
   }
-  console.log(route.params);
+  fetchLanguages();
+
 })
 
 onUpdated(() => {
@@ -81,14 +103,23 @@ onUpdated(() => {
     <div class="grid grid-cols-12 gap-4 mt-8 px-2 lg:px-8">
       <div class="col-span-12 mb-8 flex flex-col gap-4 md:col-span-3">
         <DataSort :sort-options="sortOptions"/>
-        <DataFilter :genres="genres" :selected-genres="selectedGenres"/>
+        <DataFilter :genres="genres" :selected-genres="selectedGenres" :languages="languages"/>
         <button class="w-full bg-blue-500 rounded-md py-2 text-blue-50">
           Search
         </button>
       </div>
-      <div class="col-span-12 md:col-span-9 bg-teal-500">
-       Listss
+      <div v-if="movieListsData.length >= 1"
+           class="col-span-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:col-span-9">
+       <TheCard v-for="data in movieListsData" :key="data.id" :data="cardDataTransformer(data)" solid/>
+        <div class="col-span-full">
+          <button class="w-full py-2 bg-blue-500 rounded-sm text-blue-50">Load More</button>
+        </div>
       </div>
+      <div v-else
+           class="col-span-12 grid w-full items-center justify-center pt-4">
+        <TheSpinner/>
+      </div>
+
     </div>
   </MainContainerLayout>
 </template>

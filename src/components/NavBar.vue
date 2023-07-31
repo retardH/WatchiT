@@ -12,7 +12,7 @@ const isMobileMenuOpen = ref(false);
   <div class="bg-blue-950 sticky top-0" style="z-index: 9999">
     <nav
       class="py-4 w-full px-3 lg:px-8 gap-6 mx-auto flex items-center max-w-7xl sticky top-0"
-      style="z-index: 999999"
+      style="z-index: 9999"
     >
       <i
         class="fa-solid fa-bars text-xl text-blue-200 md:hidden"
@@ -34,7 +34,8 @@ const isMobileMenuOpen = ref(false);
           <DropDown
             title="Movie"
             :open="isMovieDropDownOpen"
-            :contents="['Popular', 'Now Trending', 'Upcoming', 'Top Rated']"
+            :contents="['Popular', 'Now Playing', 'Upcoming', 'Top Rated']"
+            @menu-click="v => isTvShowDropDownOpen = false"
           />
         </li>
         <li
@@ -46,7 +47,8 @@ const isMobileMenuOpen = ref(false);
           <DropDown
             title="TV"
             :open="isTvShowDropDownOpen"
-            :contents="['Popular', 'Airing Today', 'On TV', 'Top Rated']"
+            :contents="['Popular', 'Airing Today', 'On The Air', 'Top Rated']"
+            @menu-click="v => isMovieDropDownOpen = false"
           />
         </li>
         <li class="cursor-pointer hover:text-teal-400">People</li>
@@ -62,7 +64,7 @@ const isMobileMenuOpen = ref(false);
         </i>
       </div>
     </nav>
-    <MobileMenu :open="isMobileMenuOpen" />
+    <MobileMenu :open="isMobileMenuOpen" @menu-click="i => isMobileMenuOpen = false"/>
   </div>
 </template>
 
