@@ -11,7 +11,7 @@ const props = defineProps({
 
 <template>
   <div>
-    <div class="rounded-md flex flex-col py-1.5 shadow-md border">
+    <div class="rounded-md flex flex-col bg-white py-1.5 shadow-md border">
       <div class="flex justify-between items-center p-2" :class="isClicked ? 'border-b' : 'border-b-0'" @click="isClicked =
         !isClicked">
         <h4 class="text-base lg:text-lg text-blue-950">{{props.title}}</h4>

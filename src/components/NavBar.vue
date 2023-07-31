@@ -22,7 +22,7 @@ const isMobileMenuOpen = ref(false);
           @click="Router.push('/')">WatchiT
       </h3>
       <ul class="items-center gap-6 text-blue-50 text-sm hidden md:flex">
-        <li class="cursor-pointer hover:text-teal-400">
+        <li class="cursor-pointer hover:text-teal-400" @click="Router.push('/')">
           <span>Home</span>
         </li>
         <li

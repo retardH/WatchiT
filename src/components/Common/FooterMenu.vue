@@ -15,7 +15,7 @@
   <div class="flex-col flex gap-2">
     <h4 class="uppercase text-base font-bold text-blue-50">{{props.title}}</h4>
     <div class="flex flex-col gap-1">
-      <span v-for="link in props.links" :key="link.label" class="text-blue-100 text-base">
+      <span v-for="link in props.links" :key="link.label" class="text-blue-200 text-base">
         {{link.label}}
       </span>
     </div>

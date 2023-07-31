@@ -2,7 +2,6 @@
 import Router from "@/router";
 import FooterMenu from "@/components/Common/FooterMenu.vue";
 import {footerBasics, footerCommunity, footerGetInvolved} from "@/constants";
-
 </script>
 
 <template>

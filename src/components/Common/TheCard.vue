@@ -17,7 +17,7 @@ const props = defineProps({
 
 <template>
   <div class="col-auto flex gap-2 rounded-md overflow-hidden" :class="props.solid ?
-  'bg-white shadow-md flex-row md:flex-col col-span-full md:col-auto items-center' :
+  'bg-white shadow-md flex-row md:flex-col col-span-full md:col-auto items-start' :
   'flex-col'">
     <div :class="props.solid ? 'w-5/12 md:w-full h-full' : 'w-full'" class="relative">
       <img :src="props.data.imgUrl" :alt="props.data.title" class="w-full" :class="props.solid
@@ -33,7 +33,7 @@ const props = defineProps({
         />
       </div>
     </div>
-    <div class="flex flex-col gap-4 py-2" :class="!props.solid ? 'px-0 w-7/12 md:w-full' : 'px-2 w-full'">
+    <div class="flex flex-col items-start gap-2 py-2" :class="!props.solid ? 'px-0 w-7/12 md:w-full' : 'px-2 w-full'">
       <div class="flex flex-col gap-0.5">
         <h4 class="text-blue-950 text-sm md:text-base hidden md:block mb-0 text-start" style="line-height: 18px">
           {{sliceWords(props.data.title, 12)}}
