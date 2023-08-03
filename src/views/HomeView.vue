@@ -14,7 +14,7 @@ const watchProviderFilterQuery = ref('');
 const computedTrendingQuery = computed(() => trendingFilterQuery.value === 'Today' ? 'day' : 'week');
 const computedWatchProviderQuery = computed(() => trendingFilterQuery.value === 'Movie' ? 'movie' : 'tv');
 const {trendingMoviesOnHome, popularDatas} = storeToRefs(useMovies);
-const {fetchTrendingMovies, fetchMoviesWatchProviders, fetchPopulars} = useMovies;
+const {fetchTrendingMovies, fetchPopulars} = useMovies;
 const popularQuery = ref('');
 const computedPopularQuery = computed(() => popularQuery.value === 'On Theaters' ? 'movie' : 'tv');
 watch(computedTrendingQuery, () => {
@@ -25,7 +25,6 @@ watch(computedPopularQuery, () => {
 })
 onMounted(() => {
   fetchTrendingMovies(computedTrendingQuery.value);
-  fetchMoviesWatchProviders('movie');
   fetchPopulars(computedPopularQuery.value);
 })
 </script>

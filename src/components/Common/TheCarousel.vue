@@ -14,9 +14,9 @@ const breakpoints = {
   }
 }
 const setting = {
-  itemsToShow: 2,
+  itemsToShow: 1,
   snapAlign: 'start',
-  itemsToScroll: 2
+  itemsToScroll: 1
 }
 const props = defineProps({
   slides: {

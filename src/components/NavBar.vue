@@ -1,11 +1,13 @@
 <script setup>
-import DropDown from '@/components/Common/HoverDropDown.vue';
-import { ref } from 'vue';
-import MobileMenu from '@/components/MobileMenu.vue';
-import Router from "@/router";
-const isMovieDropDownOpen = ref(false);
-const isTvShowDropDownOpen = ref(false);
-const isMobileMenuOpen = ref(false);
+import DropDown from '@/components/Common/HoverDropDown.vue'
+import { ref } from 'vue'
+import MobileMenu from '@/components/MobileMenu.vue'
+import Router from '@/router'
+
+const isMovieDropDownOpen = ref(false)
+const isTvShowDropDownOpen = ref(false)
+const isPeopleDropDownOpen = ref(false)
+const isMobileMenuOpen = ref(false)
 </script>
 
 <template>
@@ -18,8 +20,11 @@ const isMobileMenuOpen = ref(false);
         class="fa-solid fa-bars text-xl text-blue-200 md:hidden"
         @click="isMobileMenuOpen = !isMobileMenuOpen"
       ></i>
-      <h3 class="text-teal-400 font-bold text-2xl font-serif mr-auto md:mr-0 md:ml-0 cursor-pointer"
-          @click="Router.push('/')">WatchiT
+      <h3
+        class="text-teal-400 font-bold text-2xl font-serif mr-auto md:mr-0 md:ml-0 cursor-pointer"
+        @click="Router.push('/')"
+      >
+        WatchiT
       </h3>
       <ul class="items-center gap-6 text-blue-50 text-sm hidden md:flex">
         <li class="cursor-pointer hover:text-teal-400" @click="Router.push('/')">
@@ -35,7 +40,7 @@ const isMobileMenuOpen = ref(false);
             title="Movie"
             :open="isMovieDropDownOpen"
             :contents="['Popular', 'Now Playing', 'Upcoming', 'Top Rated']"
-            @menu-click="v => isTvShowDropDownOpen = false"
+            @menu-click="(v) => (isTvShowDropDownOpen = false)"
           />
         </li>
         <li
@@ -48,10 +53,22 @@ const isMobileMenuOpen = ref(false);
             title="TV"
             :open="isTvShowDropDownOpen"
             :contents="['Popular', 'Airing Today', 'On The Air', 'Top Rated']"
-            @menu-click="v => isMovieDropDownOpen = false"
+            @menu-click="(v) => (isMovieDropDownOpen = false)"
           />
         </li>
-        <li class="cursor-pointer hover:text-teal-400">People</li>
+        <li
+          class="cursor-pointer hover:text-teal-400"
+          @mouseenter="isPeopleDropDownOpen = true"
+          @mouseleave="isPeopleDropDownOpen = false"
+        >
+          <span>People</span>
+          <DropDown
+            title="People"
+            :open="isPeopleDropDownOpen"
+            :contents="['Popular']"
+            @menu-click="(v) => (isPeopleDropDownOpen = false)"
+          />
+        </li>
       </ul>
       <div class="flex items-center ml-0 md:ml-auto gap-8">
         <i class="fa-solid fa-magnifying-glass text-xl text-blue-200"></i>
@@ -64,7 +81,6 @@ const isMobileMenuOpen = ref(false);
         </i>
       </div>
     </nav>
-    <MobileMenu :open="isMobileMenuOpen" @menu-click="i => isMobileMenuOpen = false"/>
+    <MobileMenu :open="isMobileMenuOpen" @menu-click="(i) => (isMobileMenuOpen = false)" />
   </div>
 </template>
-

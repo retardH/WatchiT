@@ -92,6 +92,6 @@ const handleMenuClick = (route, title) => {
 
 .mobile-menu-enter-active a,
 .mobile-menu-leave-active a {
-  transition: all 0.2s ease-in;
+  transition: all 0.15s ease-in-out;
 }
 </style>
