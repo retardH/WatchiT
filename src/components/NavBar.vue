@@ -32,7 +32,7 @@ const navbarLinks = ref([
       contents: ['Popular']
     }
   }
-])
+]);
 </script>
 
 <template>

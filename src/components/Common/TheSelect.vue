@@ -1,6 +1,6 @@
 <script setup>
-import {ref, watch} from "vue";
-import {selectDataTransformer} from "@/transformers/selectDataTransformer";
+  import {ref, watch} from "vue";
+  import {selectDataTransformer} from "@/transformers/selectDataTransformer";
 
   const props = defineProps({
     options: {

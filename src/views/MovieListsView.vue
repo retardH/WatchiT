@@ -67,7 +67,6 @@ watch(
     } else if (route.path.includes('tv')) {
       fetchMovieLists(`3/tv/${route.params.category}`)
     }
-    console.log(movieListsData.value)
   }
 )
 
